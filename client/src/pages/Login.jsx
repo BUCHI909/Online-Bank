@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import "../styles/auth.css";
+import "../styles/Auth.css";
 import { useAuth } from "../Context/AuthContext.jsx";
 
 function Login() {
