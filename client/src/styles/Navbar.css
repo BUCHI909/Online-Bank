@@ -1,0 +1,145 @@
+/* Navbar container */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(115, 147, 163);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  z-index: 999;
+  flex-wrap: wrap;
+}
+
+/* Logo & Slogan */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #0b3c5d; /* Navy blue */
+  gap: 8px;
+}
+h1.logo {
+    margin: 0;
+}
+
+.logo-icon {
+  display: inline-block;
+  color: #0b3c5d;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(20deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.slogan {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 4px;
+  line-height: 1.2;
+}
+
+/* Links container */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #0b3c5d;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #1d70b8;
+}
+
+/* Open Account Button */
+.nav-btn {
+  background-color: #0b3c5d;
+  color: white !important;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.nav-btn:hover {
+  background-color: #072b44;
+}
+
+/* Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger .bar {
+  width: 25px;
+  height: 3px;
+  background-color: #0b3c5d;
+  transition: 0.3s;
+}
+
+.hamburger.open .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.hamburger.open .bar:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile menu */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 65px;
+    right: 10%;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    gap: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links a {
+    color: #0b3c5d; /* Navy blue for mobile text */
+  }
+
+  .nav-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
