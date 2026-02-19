@@ -1,7 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import { registerUser, loginUser, getDashboard } from "../controllers/authController.js";
-import { protect } from "../middleware/protect.js";
+import { protect } from "../middleware/Protect.js";
 import { validateLogin, validation } from "../middleware/login.js";
 import {resetPassword , forgotPassword} from "../controllers/authController.js";
 
