@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import "../styles/auth.css";
+import "../styles/Auth.css";
 
 function Register() {
   const [loading, setLoading] = useState(false);
