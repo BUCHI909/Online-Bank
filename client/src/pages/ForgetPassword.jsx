@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import "../styles/auth.css";
-import {forgotPassword as apiForget} from "../Utils/Api";
+import "../styles/Auth.css";
+import {forgotPassword as apiForget} from "../Utils/api.js";
 
 
 function ForgotPassword() {
