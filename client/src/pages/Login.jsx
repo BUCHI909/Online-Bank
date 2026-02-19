@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../styles/Auth.css";
 import { useAuth } from "../Context/AuthContext.jsx";
+import api from "./utils/api.js";
+
+
 
 function Login() {
   const { login } = useAuth();
