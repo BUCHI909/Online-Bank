@@ -28,10 +28,18 @@ const Card = ({ name, number, expiry }) => (
 
 // Styles
 const styles = {
-  wrapper: { display: "flex", flexDirection: "column", gap: 30 },
-  cards: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 20 },
+  wrapper: { 
+    display: "flex", 
+    flexDirection: "column", 
+    gap: window.innerWidth <= 768 ? 20 : 30,
+  },
+  cards: { 
+    display: "grid", 
+    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit,minmax(250px,1fr))", 
+    gap: window.innerWidth <= 768 ? 12 : 20,
+  },
   card: {
-    padding: 30,
+    padding: window.innerWidth <= 768 ? 20 : 30,
     borderRadius: 20,
     background: "linear-gradient(135deg,#0ea5e9,#6366f1)",
     color: "#fff",

@@ -46,23 +46,39 @@ const Transaction = ({ name, amount, date }) => (
 
 // Styles
 const styles = {
-  wrapper: { display: "flex", flexDirection: "column", gap: 30 },
+  wrapper: { 
+    display: "flex", 
+    flexDirection: "column", 
+    gap: window.innerWidth <= 768 ? 20 : 30,
+    padding: window.innerWidth <= 768 ? "0" : "0",
+  },
   card: {
-    background: "linear-gradient(135deg,#6366f1,#22d3ee)",
-    padding: 30,
-    borderRadius: 20,
+    background: "#1e293b",
+    padding: window.innerWidth <= 768 ? 20 : 30,
+    borderRadius: 16,
     boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
   },
-  amount: { fontSize: 36, fontWeight: "bold", marginTop: 10, display: "flex", alignItems: "center", gap: 10 },
+  amount: {
+    fontSize: window.innerWidth <= 768 ? "28px" : "32px",
+    fontWeight: "bold",
+    color: "#22d3ee",
+    marginTop: 12,
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+  },
   transactions: {
     background: "#1e293b",
-    padding: 30,
-    borderRadius: 20,
+    padding: window.innerWidth <= 768 ? 20 : 30,
+    borderRadius: 16,
+    boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
   },
   txRow: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "12px 0",
+    alignItems: "center",
+    padding: window.innerWidth <= 768 ? "10px 0" : "14px 0",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
+    fontSize: window.innerWidth <= 768 ? "12px" : "14px",
   },
 };

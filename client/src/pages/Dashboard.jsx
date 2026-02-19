@@ -176,28 +176,39 @@ const Dashboard = () => {
 };
 
 // Action Cards
-const ActionCard = ({ title, icon }) => (
-  <div
-    style={styles.actionCard}
-    onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
-    onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-  >
-    {icon}
-    <p>{title}</p>
-  </div>
-);
+const ActionCard = ({ title, icon }) => {
+  const isMobile = window.innerWidth <= 768;
+  return (
+    <div
+      style={{
+        ...styles.actionCard,
+        flexDirection: isMobile ? "row" : "column",
+      }}
+      onMouseEnter={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(-5px)")}
+      onMouseLeave={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(0)")}
+    >
+      <div style={{ fontSize: isMobile ? "20px" : "24px" }}>{icon}</div>
+      <p style={{ margin: 0, fontSize: isMobile ? "13px" : "inherit" }}>{title}</p>
+    </div>
+  );
+};
 
 // Stats Cards
-const StatCard = ({ title, amount, positive }) => (
-  <div
-    style={styles.statCard}
-    onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
-    onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-  >
-    <p>{title}</p>
-    <h2 style={{ color: positive ? "#00e676" : "#ff5252" }}>{amount}</h2>
-  </div>
-);
+const StatCard = ({ title, amount, positive }) => {
+  const isMobile = window.innerWidth <= 768;
+  return (
+    <div
+      style={styles.statCard}
+      onMouseEnter={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(-5px)")}
+      onMouseLeave={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(0)")}
+    >
+      <p style={{ margin: 0, fontSize: isMobile ? "13px" : "inherit" }}>{title}</p>
+      <h2 style={{ color: positive ? "#00e676" : "#ff5252", fontSize: isMobile ? "18px" : "24px" }}>
+        {amount}
+      </h2>
+    </div>
+  );
+};
 
 export default Dashboard;
 
@@ -209,29 +220,34 @@ const styles = {
     fontFamily: "Segoe UI, sans-serif",
     background: "#0f172a",
     color: "#fff",
+    flexDirection: window.innerWidth <= 768 ? "column" : "row",
   },
   main: {
     flex: 1,
-    padding: 24,
+    padding: window.innerWidth <= 768 ? 12 : (window.innerWidth <= 1024 ? 16 : 24),
+    overflowX: "hidden",
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: window.innerWidth <= 768 ? 16 : 20,
+    gap: 10,
   },
   balanceCard: {
     background: "linear-gradient(135deg,#6366f1,#22d3ee)",
     borderRadius: 20,
-    padding: 30,
+    padding: window.innerWidth <= 768 ? 20 : 30,
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: window.innerWidth <= 768 ? "flex-start" : "center",
     marginBottom: 30,
+    flexDirection: window.innerWidth <= 768 ? "column" : "row",
+    gap: window.innerWidth <= 768 ? 15 : 0,
   },
   showBtn: {
     marginLeft: 12,
-    fontSize: "0.8rem",
+    fontSize: window.innerWidth <= 768 ? "0.75rem" : "0.8rem",
     padding: "4px 8px",
     borderRadius: 6,
     cursor: "pointer",
@@ -242,27 +258,32 @@ const styles = {
   },
   actions: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-    gap: 20,
+    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit, minmax(140px, 1fr))",
+    gap: window.innerWidth <= 768 ? 12 : 20,
     marginBottom: 30,
   },
   actionCard: {
     background: "#1e293b",
-    padding: 20,
+    padding: window.innerWidth <= 768 ? 16 : 20,
     borderRadius: 16,
     textAlign: "center",
     cursor: "pointer",
     transition: "0.3s",
+    minHeight: window.innerWidth <= 768 ? 60 : "auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
   },
   stats: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-    gap: 20,
+    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit, minmax(180px, 1fr))",
+    gap: window.innerWidth <= 768 ? 12 : 20,
     marginBottom: 30,
   },
   statCard: {
     background: "#1e293b",
-    padding: 24,
+    padding: window.innerWidth <= 768 ? 16 : 24,
     borderRadius: 16,
     transition: "0.3s",
   },
@@ -274,25 +295,29 @@ const styles = {
   },
   lineChart: {
     background: "#1e293b",
-    padding: 20,
+    padding: window.innerWidth <= 768 ? 16 : 20,
     borderRadius: 16,
+    overflowX: "auto",
   },
   barChart: {
     background: "#1e293b",
-    padding: 20,
+    padding: window.innerWidth <= 768 ? 16 : 20,
     borderRadius: 16,
+    overflowX: "auto",
   },
   transactions: {
     background: "#1e293b",
-    padding: 24,
+    padding: window.innerWidth <= 768 ? 16 : 24,
     borderRadius: 16,
     marginBottom: 30,
+    overflowX: window.innerWidth <= 768 ? "auto" : "visible",
   },
   txRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "14px 0",
+    padding: window.innerWidth <= 768 ? "10px 0" : "14px 0",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
+    fontSize: window.innerWidth <= 768 ? "12px" : "14px",
   },
 };

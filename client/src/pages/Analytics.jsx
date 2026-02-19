@@ -26,11 +26,20 @@ const StatCard = ({ title, amount, positive }) => (
 );
 
 const styles = {
-  wrapper: { display: "flex", flexDirection: "column", gap: 30 },
-  cards: { display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 20 },
+  wrapper: { 
+    display: "flex", 
+    flexDirection: "column", 
+    gap: window.innerWidth <= 768 ? 20 : 30,
+    padding: window.innerWidth <= 768 ? "0" : "0",
+  },
+  cards: { 
+    display: "grid", 
+    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit,minmax(200px,1fr))", 
+    gap: window.innerWidth <= 768 ? 12 : 20,
+  },
   statCard: {
     background: "#1e293b",
-    padding: 30,
+    padding: window.innerWidth <= 768 ? 20 : 30,
     borderRadius: 20,
     boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
     display: "flex",

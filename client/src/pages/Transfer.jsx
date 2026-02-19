@@ -128,19 +128,19 @@ const TransferItem = ({ name, amount, date }) => (
 
 const styles = {
   wrapper: {
-    padding: "40px",
+    padding: window.innerWidth <= 768 ? "20px" : "40px",
     color: "#fff",
   },
 
   header: {
-    marginBottom: 30,
+    marginBottom: window.innerWidth <= 768 ? 20 : 30,
   },
 
   card: {
     background: "#1e293b",
-    padding: 30,
+    padding: window.innerWidth <= 768 ? 20 : 30,
     borderRadius: 20,
-    maxWidth: 600,
+    maxWidth: window.innerWidth <= 768 ? "100%" : 600,
     boxShadow: "0 15px 40px rgba(0,0,0,0.4)",
     marginBottom: 40,
   },
@@ -150,12 +150,13 @@ const styles = {
     alignItems: "center",
     gap: 10,
     marginBottom: 25,
+    fontSize: window.innerWidth <= 768 ? "18px" : "inherit",
   },
 
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: 20,
+    gap: window.innerWidth <= 768 ? 16 : 20,
   },
 
   field: {
@@ -169,34 +170,36 @@ const styles = {
     alignItems: "center",
     gap: 10,
     background: "#0f172a",
-    padding: "12px 14px",
+    padding: window.innerWidth <= 768 ? "12px 12px" : "12px 14px",
     borderRadius: 10,
+    fontSize: window.innerWidth <= 768 ? "14px" : "inherit",
   },
 
   button: {
     marginTop: 10,
-    padding: "14px",
+    padding: window.innerWidth <= 768 ? "12px" : "14px",
     borderRadius: 12,
     border: "none",
     fontWeight: "bold",
     background: "linear-gradient(135deg,#6366f1,#22d3ee)",
     color: "#fff",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: window.innerWidth <= 768 ? "14px" : "1rem",
     transition: "0.3s",
   },
 
   history: {
     background: "#1e293b",
-    padding: 30,
+    padding: window.innerWidth <= 768 ? 20 : 30,
     borderRadius: 20,
-    maxWidth: 600,
+    maxWidth: window.innerWidth <= 768 ? "100%" : 600,
   },
 
   historyRow: {
     display: "flex",
     justifyContent: "space-between",
-    padding: "14px 0",
+    padding: window.innerWidth <= 768 ? "10px 0" : "14px 0",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
+    fontSize: window.innerWidth <= 768 ? "12px" : "inherit",
   },
 };

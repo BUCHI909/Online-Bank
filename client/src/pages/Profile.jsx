@@ -28,7 +28,7 @@ const Profile = () => {
 const styles = {
   card: {
     background: "#1e293b",
-    padding: 24,
+    padding: window.innerWidth <= 768 ? 20 : 24,
     borderRadius: 16,
     boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
     display: "flex",
