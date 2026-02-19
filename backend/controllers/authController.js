@@ -21,9 +21,13 @@ export const registerUser = async (req, res) => {
 
   try {
     const normalizedEmail = email.toLowerCase();
+    console.log("📝 Register Attempt:", normalizedEmail);
 
     const existingUser = await pool.query("SELECT id FROM users WHERE email = $1", [normalizedEmail]);
-    if (existingUser.rows.length > 0) return res.status(400).json({ success: false, message: "Email already registered" });
+    if (existingUser.rows.length > 0) {
+      console.log("⚠️ Email already registered:", normalizedEmail);
+      return res.status(400).json({ success: false, message: "Email already registered" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -46,9 +50,11 @@ export const registerUser = async (req, res) => {
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     }).status(201).json({ success: true, token, user });
+    
+    console.log("✅ User registered:", user.email);
   } catch (error) {
-    console.error("Register Error:", error.message);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("❌ Register Error:", error.message);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
@@ -58,18 +64,26 @@ export const loginUser = async (req, res) => {
   // if (!errors.isEmpty()) return res.status(400).json({ success: false, errors: errors.array() })
 
   const { email, password } = req.body;
-  console.log("Login Attempt:", { email, password });
+  console.log("🔐 Login Attempt:", { email, password: "***" });
 
   try {
     const normalizedEmail = email.toLowerCase();
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [normalizedEmail]);
-    console.log("Database Result:", result.rows); 
+    console.log("📊 Database Query Success. User found:", result.rows.length > 0); 
 
-    if (result.rows.length === 0) return res.status(400).json({ success: false, message: "Invalid credentials" });
+    if (result.rows.length === 0) {
+      console.log("❌ User not found:", normalizedEmail);
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
 
     const user = result.rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ success: false, message: "Invalid credentials" });
+    console.log("🔑 Password Match:", isMatch);
+    
+    if (!isMatch) {
+      console.log("❌ Password mismatch for user:", normalizedEmail);
+      return res.status(400).json({ success: false, message: "Invalid credentials" });
+    }
 
     // const token = generateToken(user.id);
     const token = jwt.sign({ id: user.id, name: user.full_name }, process.env.JWT_SECRET, { expiresIn: "7d" });
@@ -80,11 +94,13 @@ export const loginUser = async (req, res) => {
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    // .status(200).json({ success: true, token, user: { id: user.id, fullName: user.full_name, email: user.email } });
+    
+    console.log("✅ Login successful for:", user.email);
     res.status(200).json({ success: true, token, user: { id: user.id, fullName: user.full_name, email: user.email }, message: "Login successful" });
   } catch (error) {
-    console.error("Login Error:", error.message);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("❌ Login Error:", error.message);
+    console.error("Stack:", error.stack);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
 
