@@ -135,7 +135,7 @@ export const forgotPassword = async (req, res) => {
     );
 
     const resetLink =
-      `http://localhost:5173/reset-password/${token}`;
+      `https://online-bank-3je2.vercel.app/reset-password/${token}`;
 
     await transporter.sendMail({
       to: email,

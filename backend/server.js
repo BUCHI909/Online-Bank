@@ -8,7 +8,7 @@ import authRoutes from "./routes/authRoutes.js";
 dotenv.config();
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: 'https://online-bank-3je2.vercel.app/', credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
