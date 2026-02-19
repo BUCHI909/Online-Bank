@@ -9,23 +9,13 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'https://online-bank-3je2.vercel.app',
-  'https://online-bank-3je2.vercel.app/',
-  'http://localhost:5173',
-  'http://localhost:3000'
+  "http://localhost:5173",
+  "https://online-bank-3je2.vercel.app"
 ];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS not allowed'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: allowedOrigins,
+  credentials: true
 }));
 
 app.use(express.json());
