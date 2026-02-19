@@ -12,70 +12,140 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear auth or context here
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
+  const handleNavClick = () => {
+    onClose();
+  };
+
   return (
-    <aside style={styles.sidebar}>
+    <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Sidebar Header */}
-      <div style={styles.logo}>
-        <FaUniversity size={28} />
-        <span>Genesis Bank</span>
+      <div style={styles.sidebarHeader}>
+        <div style={styles.logo}>
+          <FaUniversity size={28} />
+          <span>Genesis Bank</span>
+        </div>
+
+        <button
+          className="close-btn"
+          onClick={onClose}
+          style={{ display: window.innerWidth <= 768 ? "block" : "none" }}
+        >
+          ✕
+        </button>
       </div>
 
-      {/* Sidebar Menu — moved close to header */}
+      {/* Sidebar Menu */}
       <nav style={styles.nav}>
-        <NavItem to="/dashboard" icon={<FaHome />} label="Dashboard" />
-        <NavItem to="/dashboard/transfer" icon={<FaExchangeAlt />} label="Transfer" />
-        <NavItem to="/dashboard/wallets" icon={<FaWallet />} label="Wallets" />
-        <NavItem to="/dashboard/cards" icon={<FaCreditCard />} label="Cards" />
-        <NavItem to="/dashboard/analytics" icon={<FaChartLine />} label="Analytics" />
-        <NavItem to="/dashboard/profile" icon={<FaUser />} label="Profile" muted />
-        <NavItem to="/dashboard/settings" icon={<FaCog />} label="Settings" muted />
+        <NavLink
+          to="/dashboard"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#ccc",
+          })}
+        >
+          <FaHome /> Dashboard
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/transfer"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#ccc",
+          })}
+        >
+          <FaExchangeAlt /> Transfer
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/cards"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#ccc",
+          })}
+        >
+          <FaCreditCard /> Cards
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/wallets"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#ccc",
+          })}
+        >
+          <FaWallet /> Wallet
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/analytics"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#ccc",
+          })}
+        >
+          <FaChartLine /> Analytics
+        </NavLink>
+
+        <hr style={styles.divider} />
+
+        <NavLink
+          to="/dashboard/profile"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#999",
+          })}
+        >
+          <FaUser /> Profile
+        </NavLink>
+
+        <NavLink
+          to="/dashboard/settings"
+          onClick={handleNavClick}
+          style={({ isActive }) => ({
+            ...styles.navItem,
+            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive ? "#fff" : "#999",
+          })}
+        >
+          <FaCog /> Settings
+        </NavLink>
 
         {/* Logout */}
         <button style={styles.logout} onClick={handleLogout}>
-          <FaSignOutAlt style={{ marginRight: 8 }} /> Logout
+          <FaSignOutAlt /> Logout
         </button>
       </nav>
     </aside>
   );
 };
 
-const NavItem = ({ to, icon, label, muted }) => (
-  <NavLink
-    to={to}
-    style={({ isActive }) => ({
-      display: "flex",
-      alignItems: "center",
-      gap: 12,
-      padding: 12,
-      borderRadius: 10,
-      cursor: "pointer",
-      color: isActive ? "#fff" : muted ? "#999" : "#ccc",
-      background: isActive ? "rgba(255,255,255,0.15)" : "transparent",
-      textDecoration: "none",
-      transition: "0.3s",
-    })}
-  >
-    {icon}
-    <span>{label}</span>
-  </NavLink>
-);
-
 const styles = {
-  sidebar: {
-    width: 260,
-    minHeight: "100vh",
-    background: "linear-gradient(180deg,#1e293b,#0f172a)",
-    padding: 24,
+  sidebarHeader: {
+    marginBottom: 40,
     display: "flex",
-    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   logo: {
     display: "flex",
@@ -83,24 +153,38 @@ const styles = {
     gap: 10,
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 16, // reduce gap to bring menu closer
   },
   nav: {
     display: "flex",
     flexDirection: "column",
-    gap: 10, // tighter spacing
+    gap: 10,
+  },
+  navItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    padding: "12px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    textDecoration: "none",
+    transition: "0.3s",
+  },
+  divider: {
+    margin: "10px 0",
+    border: "none",
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
   },
   logout: {
     marginTop: 20,
-    padding: 12,
-    borderRadius: 10,
+    padding: "12px",
+    borderRadius: "10px",
     border: "none",
     background: "#ff5252",
     color: "#fff",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    gap: 10,
     fontWeight: "bold",
     transition: "0.3s",
   },
