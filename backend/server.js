@@ -9,10 +9,10 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  'https://online-bank-3je2.vercel.app',
+  
   'https://online-bank-3je2.vercel.app/',
   'http://localhost:5173',
-  'http://localhost:3000'
+  
 ];
 
 app.use(cors({
