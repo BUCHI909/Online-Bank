@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../styles/auth.css";
+import { useAuth } from "../Context/AuthContext.jsx";
 
 function Login() {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -12,15 +14,22 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/dashboard");
-    }, 1500);
+    try{
+      let response = await login({ email, password });
+      // console.log("Login Response:", response);
+      let data = response;
+      console.log("Login Data:", data);
+      if(response){
+        navigate("/dashboard");
+      }
+    }catch(err){
+      console.error("Login Error:", err);
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (

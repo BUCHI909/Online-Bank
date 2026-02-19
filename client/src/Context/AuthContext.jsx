@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginUser as apiLogin, fetchDashboard } from "../Utils/Api.js";
+import { loginUser as apiLogin, fetchDashboard } from "../Utils/api.js";
+
 
 const AuthContext = createContext();
 
@@ -17,11 +18,13 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (formData) => {
+    console.log('Attempting login with:', formData);
     const { data } = await apiLogin(formData);
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
     setToken(data.token);
     setUser(data.user);
+    return data;
   };
 
   const logout = () => {

@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 import Navbar from "../components/Navbar";
-import API from "../Utils/Api";
+// import API from "../Utils/Api";
+import { resetPassword } from "../Utils/api.js";
 import "../styles/Auth.css";
 
 function ResetPassword() {
@@ -29,9 +30,10 @@ function ResetPassword() {
     try {
       setLoading(true);
 
-      await API.post(`/auth/reset-password/${token}`, {
-        password,
-      });
+      // await API.post(`/auth/reset-password/${token}`, {
+      //   password,
+      // });
+      await resetPassword(token, { password });
 
       setMessage("Password reset successful!");
 

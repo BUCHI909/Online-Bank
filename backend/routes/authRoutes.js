@@ -2,6 +2,7 @@ import express from "express";
 import { body } from "express-validator";
 import { registerUser, loginUser, getDashboard } from "../controllers/authController.js";
 import { protect } from "../middleware/protect.js";
+import { validateLogin, validation } from "../middleware/login.js";
 import {resetPassword , forgotPassword} from "../controllers/authController.js";
 
 const router = express.Router();
@@ -18,10 +19,8 @@ router.post("/register",
 
 // LOGIN
 router.post("/login",
-  [
-    body("email").isEmail().withMessage("Please enter a valid email").normalizeEmail(),
-    body("password").notEmpty().withMessage("Password is required")
-  ],
+  validateLogin,
+  validation,
   loginUser
 );
 

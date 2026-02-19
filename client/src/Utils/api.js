@@ -14,4 +14,4 @@ export const fetchDashboard = () => API.get("/auth/dashboard");
 export const forgotPassword = (data) => API.post("/auth/forgot-password", data);
 export const resetPassword = (token, data) => API.post(`/auth/reset-password/${token}`, data);
 
-export default API;
+// export default API;
