@@ -1,6 +1,6 @@
 // src/components/Sidebar.jsx
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   FaUniversity,
   FaHome,
@@ -16,6 +16,11 @@ import {
 const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = React.useState(false);
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === path || location.pathname.startsWith(path + "/");
+  };
 
   const handleLogout = () => {
     setLoggingOut(true);
@@ -53,91 +58,91 @@ const Sidebar = ({ isOpen, onClose }) => {
       </div>
 
       <nav style={styles.nav}>
-        <NavLink
-          to="/dashboard"
+        <button
           onClick={(e) => handleNavClick("/dashboard", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#ccc",
-          })}
+            background: isActive("/dashboard") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard") ? "#fff" : "#ccc",
+            textAlign: "left",
+          }}
         >
           <FaHome /> Dashboard
-        </NavLink>
+        </button>
 
-        <NavLink
-          to="/dashboard/transfer"
+        <button
           onClick={(e) => handleNavClick("/dashboard/transfer", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#ccc",
-          })}
+            background: isActive("/dashboard/transfer") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/transfer") ? "#fff" : "#ccc",
+            textAlign: "left",
+          }}
         >
           <FaExchangeAlt /> Transfer
-        </NavLink>
+        </button>
 
-        <NavLink
-          to="/dashboard/cards"
+        <button
           onClick={(e) => handleNavClick("/dashboard/cards", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#ccc",
-          })}
+            background: isActive("/dashboard/cards") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/cards") ? "#fff" : "#ccc",
+            textAlign: "left",
+          }}
         >
           <FaCreditCard /> Cards
-        </NavLink>
+        </button>
 
-        <NavLink
-          to="/dashboard/wallets"
+        <button
           onClick={(e) => handleNavClick("/dashboard/wallets", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#ccc",
-          })}
+            background: isActive("/dashboard/wallets") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/wallets") ? "#fff" : "#ccc",
+            textAlign: "left",
+          }}
         >
           <FaWallet /> Wallet
-        </NavLink>
+        </button>
 
-        <NavLink
-          to="/dashboard/analytics"
+        <button
           onClick={(e) => handleNavClick("/dashboard/analytics", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#ccc",
-          })}
+            background: isActive("/dashboard/analytics") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/analytics") ? "#fff" : "#ccc",
+            textAlign: "left",
+          }}
         >
           <FaChartLine /> Analytics
-        </NavLink>
+        </button>
 
         <hr style={styles.divider} />
 
-        <NavLink
-          to="/dashboard/profile"
+        <button
           onClick={(e) => handleNavClick("/dashboard/profile", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#999",
-          })}
+            background: isActive("/dashboard/profile") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/profile") ? "#fff" : "#999",
+            textAlign: "left",
+          }}
         >
           <FaUser /> Profile
-        </NavLink>
+        </button>
 
-        <NavLink
-          to="/dashboard/settings"
+        <button
           onClick={(e) => handleNavClick("/dashboard/settings", e)}
-          style={({ isActive }) => ({
+          style={{
             ...styles.navItem,
-            background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
-            color: isActive ? "#fff" : "#999",
-          })}
+            background: isActive("/dashboard/settings") ? "rgba(99, 102, 241, 0.3)" : "transparent",
+            color: isActive("/dashboard/settings") ? "#fff" : "#999",
+            textAlign: "left",
+          }}
         >
           <FaCog /> Settings
-        </NavLink>
+        </button>
 
         <button style={styles.logout} onClick={handleLogout} disabled={loggingOut}>
           {loggingOut ? (
