@@ -9,7 +9,6 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 
-// Chart.js
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,7 +21,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-// Recharts
 import {
   ResponsiveContainer,
   BarChart,
@@ -33,7 +31,6 @@ import {
   CartesianGrid,
 } from "recharts";
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -85,26 +82,20 @@ const Dashboard = () => {
   const [showBalance, setShowBalance] = useState(true);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Add real logout logic
-    navigate("/login");
-  };
-
   return (
     <div style={styles.container}>
-      {/* Main Content (NO Sidebar here) */}
       <main style={styles.main}>
         {/* Header */}
         <header style={styles.header}>
-          <h2>Welcome back, Genesis 👋</h2>
-          <FaBell size={24} style={{ cursor: "pointer" }} />
+          <h2 style={{ margin: 0 }}>Welcome back, Genesis 👋</h2>
+          <FaBell size={'clamp(1.4rem, 3vw, 1.8rem)'} style={{ cursor: "pointer" }} />
         </header>
 
         {/* Balance Card */}
         <section style={styles.balanceCard}>
           <div>
-            <p>Total Balance</p>
-            <h1>
+            <p style={{ opacity: 0.8, marginBottom: '0.5rem' }}>Total Balance</p>
+            <h1 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
               {showBalance ? "$12,458.00" : "XXXX"}
               <button
                 style={styles.showBtn}
@@ -114,7 +105,7 @@ const Dashboard = () => {
               </button>
             </h1>
           </div>
-          <FaMoneyBillWave size={40} />
+          <FaMoneyBillWave size={'clamp(2rem, 5vw, 2.8rem)'} />
         </section>
 
         {/* Quick Actions */}
@@ -135,10 +126,10 @@ const Dashboard = () => {
         {/* Charts */}
         <section style={styles.charts}>
           <div style={styles.lineChart}>
-            <Line data={chartData} />
+            <Line data={chartData} options={{ maintainAspectRatio: false }} height={300} />
           </div>
           <div style={styles.barChart}>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={barData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
@@ -152,12 +143,12 @@ const Dashboard = () => {
 
         {/* Recent Transactions */}
         <section style={styles.transactions}>
-          <h3>Recent Transactions</h3>
+          <h3 style={{ marginBottom: '1rem', marginTop: 0 }}>Recent Transactions</h3>
           {transactions.map((tx) => (
             <div key={tx.id} style={styles.txRow}>
               <div>
                 <strong>{tx.name}</strong>
-                <p>{tx.date}</p>
+                <p style={{ margin: '0.25rem 0 0 0', opacity: 0.6, fontSize: '0.9em' }}>{tx.date}</p>
               </div>
               <span
                 style={{
@@ -177,33 +168,40 @@ const Dashboard = () => {
 
 // Action Cards
 const ActionCard = ({ title, icon }) => {
-  const isMobile = window.innerWidth <= 768;
   return (
     <div
-      style={{
-        ...styles.actionCard,
-        flexDirection: isMobile ? "row" : "column",
+      style={styles.actionCard}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-6px)";
+        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
       }}
-      onMouseEnter={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(-5px)")}
-      onMouseLeave={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(0)")}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     >
-      <div style={{ fontSize: isMobile ? "20px" : "24px" }}>{icon}</div>
-      <p style={{ margin: 0, fontSize: isMobile ? "13px" : "inherit" }}>{title}</p>
+      <div style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>{icon}</div>
+      <p style={{ margin: 0, fontSize: "clamp(0.8rem, 2vw, 0.95rem)", fontWeight: "500" }}>{title}</p>
     </div>
   );
 };
 
 // Stats Cards
 const StatCard = ({ title, amount, positive }) => {
-  const isMobile = window.innerWidth <= 768;
   return (
     <div
       style={styles.statCard}
-      onMouseEnter={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(-5px)")}
-      onMouseLeave={(e) => !isMobile && (e.currentTarget.style.transform = "translateY(0)")}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = "translateY(-6px)";
+        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
     >
-      <p style={{ margin: 0, fontSize: isMobile ? "13px" : "inherit" }}>{title}</p>
-      <h2 style={{ color: positive ? "#00e676" : "#ff5252", fontSize: isMobile ? "18px" : "24px" }}>
+      <p style={{ margin: 0, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", opacity: 0.8 }}>{title}</p>
+      <h2 style={{ color: positive ? "#00e676" : "#ff5252", fontSize: "clamp(1.4rem, 3.5vw, 2rem)", margin: "0.5rem 0 0 0" }}>
         {amount}
       </h2>
     </div>
@@ -212,7 +210,7 @@ const StatCard = ({ title, amount, positive }) => {
 
 export default Dashboard;
 
-// ===== STYLES =====
+// ===== RESPONSIVE STYLES WITH CLAMP =====
 const styles = {
   container: {
     display: "flex",
@@ -220,104 +218,112 @@ const styles = {
     fontFamily: "Segoe UI, sans-serif",
     background: "#0f172a",
     color: "#fff",
-    flexDirection: window.innerWidth <= 768 ? "column" : "row",
   },
   main: {
     flex: 1,
-    padding: window.innerWidth <= 768 ? 12 : (window.innerWidth <= 1024 ? 16 : 24),
+    padding: "clamp(1rem, 4vw, 2rem)",
     overflowX: "hidden",
   },
   header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: window.innerWidth <= 768 ? 16 : 20,
-    gap: 10,
+    marginBottom: "clamp(1rem, 2vw, 1.5rem)",
+    gap: "1rem",
+    flexWrap: "wrap",
   },
   balanceCard: {
     background: "linear-gradient(135deg,#6366f1,#22d3ee)",
-    borderRadius: 20,
-    padding: window.innerWidth <= 768 ? 20 : 30,
+    borderRadius: "clamp(1rem, 2vw, 1.5rem)",
+    padding: "clamp(1.2rem, 4vw, 1.8rem)",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: window.innerWidth <= 768 ? "flex-start" : "center",
-    marginBottom: 30,
-    flexDirection: window.innerWidth <= 768 ? "column" : "row",
-    gap: window.innerWidth <= 768 ? 15 : 0,
+    alignItems: "center",
+    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+    gap: "1rem",
+    minHeight: "clamp(100px, 20vw, 150px)",
+    flexWrap: "wrap",
   },
   showBtn: {
-    marginLeft: 12,
-    fontSize: window.innerWidth <= 768 ? "0.75rem" : "0.8rem",
-    padding: "4px 8px",
-    borderRadius: 6,
+    marginLeft: "clamp(0.5rem, 1vw, 1rem)",
+    fontSize: "clamp(0.7rem, 2vw, 0.85rem)",
+    padding: "clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.5rem, 1.5vw, 0.8rem)",
+    borderRadius: "0.4rem",
     cursor: "pointer",
     border: "none",
     background: "rgba(255,255,255,0.25)",
     color: "#fff",
-    transition: "0.3s",
+    transition: "all 0.3s ease",
   },
   actions: {
     display: "grid",
-    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit, minmax(140px, 1fr))",
-    gap: window.innerWidth <= 768 ? 12 : 20,
-    marginBottom: 30,
+    gridTemplateColumns: "repeat(auto-fit, minmax(clamp(120px, 25vw, 200px), 1fr))",
+    gap: "clamp(0.8rem, 2vw, 1.2rem)",
+    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
   },
   actionCard: {
     background: "#1e293b",
-    padding: window.innerWidth <= 768 ? 16 : 20,
-    borderRadius: 16,
+    padding: "clamp(1rem, 2.5vw, 1.5rem)",
+    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
     textAlign: "center",
     cursor: "pointer",
-    transition: "0.3s",
-    minHeight: window.innerWidth <= 768 ? 60 : "auto",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    minHeight: "clamp(80px, 15vw, 120px)",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
+    gap: "0.5rem",
   },
   stats: {
     display: "grid",
-    gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "repeat(auto-fit, minmax(180px, 1fr))",
-    gap: window.innerWidth <= 768 ? 12 : 20,
-    marginBottom: 30,
+    gridTemplateColumns: "repeat(auto-fit, minmax(clamp(140px, 28vw, 220px), 1fr))",
+    gap: "clamp(0.8rem, 2vw, 1.2rem)",
+    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
   },
   statCard: {
     background: "#1e293b",
-    padding: window.innerWidth <= 768 ? 16 : 24,
-    borderRadius: 16,
-    transition: "0.3s",
+    padding: "clamp(1.2rem, 2.5vw, 1.5rem)",
+    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
+    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    minHeight: "clamp(100px, 18vw, 140px)",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   charts: {
     display: "grid",
     gridTemplateColumns: "1fr",
-    gap: 30,
-    marginBottom: 30,
+    gap: "clamp(1.5rem, 3vw, 2rem)",
+    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
   },
   lineChart: {
     background: "#1e293b",
-    padding: window.innerWidth <= 768 ? 16 : 20,
-    borderRadius: 16,
+    padding: "clamp(1rem, 2.5vw, 1.5rem)",
+    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
     overflowX: "auto",
+    minHeight: "300px",
   },
   barChart: {
     background: "#1e293b",
-    padding: window.innerWidth <= 768 ? 16 : 20,
-    borderRadius: 16,
+    padding: "clamp(1rem, 2.5vw, 1.5rem)",
+    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
     overflowX: "auto",
+    minHeight: "clamp(250px, 40vw, 350px)",
   },
   transactions: {
     background: "#1e293b",
-    padding: window.innerWidth <= 768 ? 16 : 24,
-    borderRadius: 16,
-    marginBottom: 30,
-    overflowX: window.innerWidth <= 768 ? "auto" : "visible",
+    padding: "clamp(1rem, 2.5vw, 1.5rem)",
+    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
+    marginBottom: "2rem",
+    overflowX: "auto",
   },
   txRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: window.innerWidth <= 768 ? "10px 0" : "14px 0",
+    padding: "clamp(0.8rem, 1.5vw, 1rem) 0",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
-    fontSize: window.innerWidth <= 768 ? "12px" : "14px",
+    fontSize: "clamp(0.85rem, 2vw, 1rem)",
   },
 };

@@ -12,6 +12,12 @@ function DashboardLayout() {
       {/* Sidebar Component */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
+      {/* Overlay for mobile when sidebar is open */}
+      <div
+        className={sidebarOpen ? "overlay open" : "overlay"}
+        onClick={() => setSidebarOpen(false)}
+      />
+
       {/* Main Area */}
       <div className="main">
 
@@ -21,11 +27,20 @@ function DashboardLayout() {
           <button
             className="menu-btn"
             onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar"
           >
             ☰
           </button>
 
           <h3>Genesis Bank Dashboard</h3>
+
+          <button
+            className="bank-home-btn"
+            onClick={() => setSidebarOpen((s) => !s)}
+            aria-label="Bank Home Toggle"
+          >
+            Bank Home
+          </button>
 
         </header>
 
