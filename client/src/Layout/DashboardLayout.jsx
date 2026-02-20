@@ -1,4 +1,3 @@
-// src/layouts/DashboardLayout.jsx
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -9,14 +8,19 @@ function DashboardLayout() {
   return (
     <div className="dashboard">
 
-      {/* Sidebar Component */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-      {/* Overlay for mobile when sidebar is open */}
-      <div
-        className={sidebarOpen ? "overlay open" : "overlay"}
-        onClick={() => setSidebarOpen(false)}
+      {/* Sidebar */}
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
+
+      {/* Overlay (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="overlay open"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Main Area */}
       <div className="main">
@@ -33,14 +37,6 @@ function DashboardLayout() {
           </button>
 
           <h3>Genesis Bank Dashboard</h3>
-
-          <button
-            className="bank-home-btn"
-            onClick={() => setSidebarOpen((s) => !s)}
-            aria-label="Bank Home Toggle"
-          >
-            Bank Home
-          </button>
 
         </header>
 
