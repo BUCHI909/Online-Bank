@@ -82,8 +82,8 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         {/* ✅ FIXED PATH */}
         <button
-          onClick={() => go("/dashboard/wallet")}
-          className={isActive("/dashboard/wallet") ? "active" : ""}
+          onClick={() => go("/dashboard/wallets")}
+          className={isActive("/dashboard/wallets") ? "active" : ""}
         >
           <FaWallet /> Wallet
         </button>
