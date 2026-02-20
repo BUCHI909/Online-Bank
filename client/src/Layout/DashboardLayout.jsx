@@ -14,26 +14,33 @@ function DashboardLayout() {
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Overlay */}
-      <div
-        className={`overlay ${sidebarOpen ? "open" : ""}`}
-        onClick={() => setSidebarOpen(false)}
-      />
+      {/* Overlay (mobile) */}
+      {sidebarOpen && (
+        <div
+          className="overlay open"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      {/* Main */}
+      {/* Main Area */}
       <div className="main">
 
+        {/* Navbar */}
         <header className="navbar">
+
           <button
             className="menu-btn"
             onClick={() => setSidebarOpen(true)}
+            aria-label="Open sidebar"
           >
             ☰
           </button>
 
           <h3>Genesis Bank Dashboard</h3>
+
         </header>
 
+        {/* Page Content */}
         <main className="content">
           <Outlet />
         </main>
