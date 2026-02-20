@@ -99,23 +99,20 @@ const styles = {
 
   cards: {
     display: "grid",
-    gridTemplateColumns:
-      window.innerWidth <= 768
-        ? "1fr"
-        : "repeat(auto-fit, minmax(360px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
     gap: 20,
   },
 
   card: {
     position: "relative",
-    height: 220,
+    minHeight: 180,
     borderRadius: 22,
     padding: 25,
     color: "#fff",
     background:
       "linear-gradient(135deg,#0f172a,#1e3a8a,#6366f1)",
     boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
-    overflow: "hidden",
+    overflow: "visible",
   },
 
   topRow: {
@@ -151,11 +148,11 @@ const styles = {
   },
 
   number: {
-    fontSize: 22,
+    fontSize: "clamp(18px, 4vw, 22px)",
     letterSpacing: 2,
-    marginTop: 25,
-    marginBottom: 25,
-    fontWeight: 500,
+    marginTop: 20,
+    marginBottom: 16,
+    fontWeight: 600,
   },
 
   bottomRow: {
