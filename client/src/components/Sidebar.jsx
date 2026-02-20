@@ -35,7 +35,23 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   const handleNavClick = (to, e) => {
     if (e && e.preventDefault) e.preventDefault();
-    navigate(to);
+    try {
+      console.log("Sidebar: navigating to", to);
+      navigate(to);
+    } catch (err) {
+      console.warn("navigate() failed, falling back to window.location", err);
+      window.location.assign(to);
+      return;
+    }
+
+    // if navigate didn't take effect within 300ms (mobile quirks), fall back to full navigation
+    setTimeout(() => {
+      if (!location.pathname.startsWith(to)) {
+        console.warn("Sidebar: navigate didn't update path, forcing full navigation to", to);
+        window.location.assign(to);
+      }
+    }, 300);
+
     // Delay closing the sidebar slightly so page transition isn't interrupted on mobile
     if (onClose) setTimeout(() => onClose(), 120);
   };
@@ -59,6 +75,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
       <nav style={styles.nav}>
         <button
+          type="button"
           onClick={(e) => handleNavClick("/dashboard", e)}
           style={{
             ...styles.navItem,
@@ -71,6 +88,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
 
         <button
+          type="button"
           onClick={(e) => handleNavClick("/dashboard/transfer", e)}
           style={{
             ...styles.navItem,
@@ -83,6 +101,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
 
         <button
+          type="button"
           onClick={(e) => handleNavClick("/dashboard/cards", e)}
           style={{
             ...styles.navItem,
@@ -95,6 +114,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
 
         <button
+          type="button"
           onClick={(e) => handleNavClick("/dashboard/wallets", e)}
           style={{
             ...styles.navItem,
@@ -107,6 +127,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
 
         <button
+          type="button"
           onClick={(e) => handleNavClick("/dashboard/analytics", e)}
           style={{
             ...styles.navItem,
