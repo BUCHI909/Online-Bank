@@ -29,15 +29,15 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   const handleNavClick = (to) => {
-    if (onClose) onClose();
-    // let NavLink handle navigation; ensure focus/scroll resets
+    // Delay closing the sidebar slightly so navigation can occur on mobile
+    if (onClose) setTimeout(() => onClose(), 120);
   };
 
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
       {/* Sidebar Header */}
       <div style={styles.sidebarHeader}>
-        <div style={styles.logo}>
+    const handleNavClick = (to) => {
           <FaUniversity size={28} />
           <span>Genesis Bank</span>
         </div>
@@ -64,7 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaHome /> Dashboard
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard")}
         <NavLink
           to="/dashboard/transfer"
           onClick={handleNavClick}
@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaExchangeAlt /> Transfer
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/transfer")}
         <NavLink
           to="/dashboard/cards"
           onClick={handleNavClick}
@@ -88,7 +88,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaCreditCard /> Cards
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/cards")}
         <NavLink
           to="/dashboard/wallets"
           onClick={handleNavClick}
@@ -100,7 +100,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaWallet /> Wallet
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/wallets")}
         <NavLink
           to="/dashboard/analytics"
           onClick={handleNavClick}
@@ -112,7 +112,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaChartLine /> Analytics
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/analytics")}
         <hr style={styles.divider} />
 
         <NavLink
@@ -126,7 +126,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaUser /> Profile
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/profile")}
         <NavLink
           to="/dashboard/settings"
           onClick={handleNavClick}
@@ -138,7 +138,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaCog /> Settings
         </NavLink>
-
+            onClick={() => handleNavClick("/dashboard/settings")}
         {/* Logout */}
         <button style={styles.logout} onClick={handleLogout} disabled={loggingOut}>
           {loggingOut ? (
