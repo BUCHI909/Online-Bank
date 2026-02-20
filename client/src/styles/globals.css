@@ -1414,6 +1414,164 @@ p { font-size: clamp(0.9rem, 2vw, 1rem); line-height: 1.6; }
 
 }
 
+/* ===== DASHBOARD LAYOUT ===== */
 
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #0b1220;
+  color: #fff;
+  position: relative;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;           /* hidden by default */
+  width: 280px;
+  height: 100vh;
+  background: #0f172a;
+  padding: 20px;
+  transition: 0.35s ease;
+  z-index: 1000;          /* 🔥 IMPORTANT */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  left: 0;                /* slide in */
+}
+
+/* Header */
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.logo {
+  display: flex;
+  gap: 10px;
+  font-weight: bold;
+  align-items: center;
+  font-size: 18px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Nav */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav button {
+  background: none;
+  border: none;
+  color: #cbd5e1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.sidebar-nav button:hover {
+  background: #1e293b;
+  color: #fff;
+}
+
+.sidebar-nav button.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+.sidebar-nav .logout {
+  margin-top: auto;
+  color: #f87171;
+}
+
+/* ===== MAIN AREA ===== */
+
+.main {
+  flex: 1;
+  margin-left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+
+.navbar {
+  height: 70px;
+  background: #111827;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 15px;
+  border-bottom: 1px solid #1f2937;
+}
+
+.menu-btn {
+  font-size: 22px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Content */
+
+.content {
+  padding: 25px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ===== OVERLAY ===== */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 900;
+}
+
+/* ===== DESKTOP MODE ===== */
+
+@media (min-width: 1024px) {
+
+  .sidebar {
+    left: 0;
+  }
+
+  .main {
+    margin-left: 280px;   /* space for sidebar */
+  }
+
+  .close-btn {
+    display: none;
+  }
+
+  .overlay {
+    display: none;
+  }
+}
 
 
