@@ -17,27 +17,28 @@ const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = React.useState(false);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setLoggingOut(true);
-    // show spinner briefly, then logout
     setTimeout(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       setLoggingOut(false);
+      if (onClose) onClose();
       navigate("/login");
     }, 900);
   };
 
-  const handleNavClick = (to) => {
-    // Delay closing the sidebar slightly so navigation can occur on mobile
+  const handleNavClick = (to, e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    navigate(to);
+    // Delay closing the sidebar slightly so page transition isn't interrupted on mobile
     if (onClose) setTimeout(() => onClose(), 120);
   };
 
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
-      {/* Sidebar Header */}
       <div style={styles.sidebarHeader}>
-    const handleNavClick = (to) => {
+        <div style={styles.logo}>
           <FaUniversity size={28} />
           <span>Genesis Bank</span>
         </div>
@@ -51,11 +52,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      {/* Sidebar Menu */}
       <nav style={styles.nav}>
         <NavLink
           to="/dashboard"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -64,10 +64,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaHome /> Dashboard
         </NavLink>
-            onClick={() => handleNavClick("/dashboard")}
+
         <NavLink
           to="/dashboard/transfer"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/transfer", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -76,10 +76,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaExchangeAlt /> Transfer
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/transfer")}
+
         <NavLink
           to="/dashboard/cards"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/cards", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -88,10 +88,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaCreditCard /> Cards
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/cards")}
+
         <NavLink
           to="/dashboard/wallets"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/wallets", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -100,10 +100,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaWallet /> Wallet
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/wallets")}
+
         <NavLink
           to="/dashboard/analytics"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/analytics", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -112,12 +112,12 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaChartLine /> Analytics
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/analytics")}
+
         <hr style={styles.divider} />
 
         <NavLink
           to="/dashboard/profile"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/profile", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -126,10 +126,10 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaUser /> Profile
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/profile")}
+
         <NavLink
           to="/dashboard/settings"
-          onClick={handleNavClick}
+          onClick={(e) => handleNavClick("/dashboard/settings", e)}
           style={({ isActive }) => ({
             ...styles.navItem,
             background: isActive ? "rgba(99, 102, 241, 0.3)" : "transparent",
@@ -138,8 +138,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         >
           <FaCog /> Settings
         </NavLink>
-            onClick={() => handleNavClick("/dashboard/settings")}
-        {/* Logout */}
+
         <button style={styles.logout} onClick={handleLogout} disabled={loggingOut}>
           {loggingOut ? (
             <>
