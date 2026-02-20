@@ -1,4 +1,5 @@
 // src/components/Sidebar.jsx
+import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaUniversity,
@@ -14,15 +15,22 @@ import {
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = React.useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/login");
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    // show spinner briefly, then logout
+    setTimeout(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      setLoggingOut(false);
+      navigate("/login");
+    }, 900);
   };
 
-  const handleNavClick = () => {
-    onClose();
+  const handleNavClick = (to) => {
+    if (onClose) onClose();
+    // let NavLink handle navigation; ensure focus/scroll resets
   };
 
   return (
@@ -132,8 +140,16 @@ const Sidebar = ({ isOpen, onClose }) => {
         </NavLink>
 
         {/* Logout */}
-        <button style={styles.logout} onClick={handleLogout}>
-          <FaSignOutAlt /> Logout
+        <button style={styles.logout} onClick={handleLogout} disabled={loggingOut}>
+          {loggingOut ? (
+            <>
+              <span className="btn-spinner" /> Logging out...
+            </>
+          ) : (
+            <>
+              <FaSignOutAlt /> Logout
+            </>
+          )}
         </button>
       </nav>
     </aside>
