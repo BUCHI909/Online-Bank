@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   FaUniversity,
   FaHome,
@@ -14,19 +14,7 @@ import {
 
 const Sidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [loggingOut, setLoggingOut] = React.useState(false);
-
-  const isActive = (path) =>
-    location.pathname === path ||
-    location.pathname.startsWith(path + "/");
-
-  const go = (path) => {
-    navigate(path);
-
-    // Close sidebar AFTER navigation (important for mobile)
-    if (onClose) setTimeout(onClose, 250);
-  };
 
   const handleLogout = () => {
     setLoggingOut(true);
@@ -34,89 +22,69 @@ const Sidebar = ({ isOpen, onClose }) => {
     setTimeout(() => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-
-      setLoggingOut(false);
       navigate("/login");
-      if (onClose) onClose();
-    }, 900);
+    }, 700);
+  };
+
+  const linkClass = ({ isActive }) =>
+    `nav-link ${isActive ? "active" : ""}`;
+
+  const handleClick = () => {
+    if (window.innerWidth <= 768) onClose();
   };
 
   return (
     <aside className={`sidebar ${isOpen ? "open" : ""}`}>
 
-      {/* Header */}
+      {/* Logo */}
       <div className="sidebar-header">
-        <div className="logo">
-          <FaUniversity size={26} />
-          <span>Genesis Bank</span>
-        </div>
+        <FaUniversity size={26} />
+        <span>Genesis Bank</span>
 
         <button className="close-btn" onClick={onClose}>
           ✕
         </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="sidebar-nav">
+      <nav className="nav">
 
-        <button
-          onClick={() => go("/dashboard")}
-          className={isActive("/dashboard") ? "active" : ""}
-        >
+        <NavLink to="/dashboard" className={linkClass} onClick={handleClick}>
           <FaHome /> Dashboard
-        </button>
+        </NavLink>
 
-        <button
-          onClick={() => go("/dashboard/transfer")}
-          className={isActive("/dashboard/transfer") ? "active" : ""}
-        >
+        <NavLink to="/dashboard/transfer" className={linkClass} onClick={handleClick}>
           <FaExchangeAlt /> Transfer
-        </button>
+        </NavLink>
 
-        <button
-          onClick={() => go("/dashboard/cards")}
-          className={isActive("/dashboard/cards") ? "active" : ""}
-        >
+        <NavLink to="/dashboard/cards" className={linkClass} onClick={handleClick}>
           <FaCreditCard /> Cards
-        </button>
+        </NavLink>
 
-        {/* ✅ FIXED PATH */}
-        <button
-          onClick={() => go("/dashboard/wallets")}
-          className={isActive("/dashboard/wallets") ? "active" : ""}
-        >
+        <NavLink to="/dashboard/wallets" className={linkClass} onClick={handleClick}>
           <FaWallet /> Wallet
-        </button>
+        </NavLink>
 
-        <button
-          onClick={() => go("/dashboard/analytics")}
-          className={isActive("/dashboard/analytics") ? "active" : ""}
-        >
+        <NavLink to="/dashboard/analytics" className={linkClass} onClick={handleClick}>
           <FaChartLine /> Analytics
-        </button>
+        </NavLink>
 
         <hr />
 
-        <button
-          onClick={() => go("/dashboard/profile")}
-          className={isActive("/dashboard/profile") ? "active" : ""}
-        >
+        <NavLink to="/dashboard/profile" className={linkClass} onClick={handleClick}>
           <FaUser /> Profile
-        </button>
+        </NavLink>
+
+        <NavLink to="/dashboard/settings" className={linkClass} onClick={handleClick}>
+          <FaCog /> Settings
+        </NavLink>
 
         <button
-          onClick={() => go("/dashboard/settings")}
-          className={isActive("/dashboard/settings") ? "active" : ""}
+          className="logout-btn"
+          onClick={handleLogout}
+          disabled={loggingOut}
         >
-          <FaCog /> Settings
-        </button>
-
-        <button className="logout" onClick={handleLogout}>
-          {loggingOut ? "Logging out..." : (
-            <>
-              <FaSignOutAlt /> Logout
-            </>
-          )}
+          <FaSignOutAlt />
+          {loggingOut ? "Logging out..." : "Logout"}
         </button>
 
       </nav>
