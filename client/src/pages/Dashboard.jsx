@@ -3,154 +3,148 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaBell,
-  FaUserCircle,
+  FaChevronDown,
   FaExchangeAlt,
   FaWallet,
-  FaMoneyBillWave,
-  FaArrowUp,
-  FaArrowDown,
-  FaPlus
+  FaCreditCard,
+  FaPlus,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip as ChartTooltip,
-  Legend,
-} from "chart.js";
-import { Line } from "react-chartjs-2";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  ChartTooltip,
-  Legend
-);
 
 /* ================= MOCK DATA ================= */
 
-const transactions = [
-  { id: 1, name: "Netflix Subscription", amount: -55, date: "Today" },
-  { id: 2, name: "Salary Credit", amount: 3500, date: "Yesterday" },
-  { id: 3, name: "Transfer to David", amount: -250, date: "Feb 10" },
-  { id: 4, name: "Electricity Bill", amount: -180, date: "Feb 9" },
+const accounts = [
+  { id: 1, name: "Main Account", balance: 12458.0 },
+  { id: 2, name: "Savings", balance: 8200.5 },
 ];
 
-const chartData = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-  datasets: [
-    {
-      label: "Balance Trend",
-      data: [1200, 1900, 1700, 2200, 2400, 2100],
-      borderColor: "#22d3ee",
-      backgroundColor: "rgba(34,211,238,0.15)",
-      tension: 0.45,
-      fill: true,
-    },
-  ],
-};
+const transactions = [
+  { id: 1, name: "Netflix", amount: -55 },
+  { id: 2, name: "Salary", amount: 3500 },
+  { id: 3, name: "Transfer to David", amount: -250 },
+];
 
 /* ================= COMPONENT ================= */
 
 const Dashboard = () => {
-  const [showBalance, setShowBalance] = useState(true);
   const navigate = useNavigate();
+
+  const [activeAccount, setActiveAccount] = useState(accounts[0]);
+  const [showBalance, setShowBalance] = useState(true);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   return (
     <div style={styles.container}>
+      
+      {/* ===== HEADER ===== */}
+      <header style={styles.header}>
+        <h2 style={{ margin: 0 }}>Genesis Bank</h2>
 
-      {/* ===== TOP BAR ===== */}
-      <div style={styles.topBar}>
-        <div style={styles.userRow}>
-          <FaUserCircle size={40} />
-          <div>
-            <p style={styles.greeting}>Welcome back</p>
-            <h3 style={{ margin: 0 }}>Genesis 👋</h3>
-          </div>
-        </div>
-
-        <div style={styles.bell}>
+        <div style={styles.headerRight}>
           <FaBell size={20} />
-          <span style={styles.badge}>3</span>
         </div>
-      </div>
+      </header>
 
-      {/* ===== BALANCE CARD ===== */}
-      <section style={styles.balanceCard}>
-        <p style={styles.balanceLabel}>Total Balance</p>
+      {/* ===== ACCOUNT SELECTOR ===== */}
+      <section style={styles.accountSection}>
+        <button
+          style={styles.accountBtn}
+          onClick={() => setAccountOpen(!accountOpen)}
+        >
+          <div>
+            <strong>{activeAccount.name}</strong>
+            <p style={styles.accountSub}>Available balance</p>
+          </div>
 
-        <h1 style={styles.balanceAmount}>
-          {showBalance ? "$12,458.00" : "••••••••"}
+          <FaChevronDown />
+        </button>
+
+        {accountOpen && (
+          <div style={styles.accountDropdown}>
+            {accounts.map((acc) => (
+              <div
+                key={acc.id}
+                style={styles.accountItem}
+                onClick={() => {
+                  setActiveAccount(acc);
+                  setAccountOpen(false);
+                }}
+              >
+                {acc.name}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* BALANCE */}
+        <h1 style={styles.balance}>
+          {showBalance
+            ? `$${activeAccount.balance.toLocaleString()}`
+            : "••••••••"}
         </h1>
 
         <button
-          style={styles.hideBtn}
+          style={styles.eyeBtn}
           onClick={() => setShowBalance(!showBalance)}
         >
-          {showBalance ? "Hide balance" : "Show balance"}
+          {showBalance ? <FaEyeSlash /> : <FaEye />}
         </button>
+      </section>
 
-        {/* Quick chips */}
-        <div style={styles.chips}>
-          <Chip label="Income" value="+$4,200" positive />
-          <Chip label="Expenses" value="-$1,850" />
-          <Chip label="Savings" value="+$6,400" positive />
+      {/* ===== CARD PREVIEW ===== */}
+      <section style={styles.card}>
+        <p style={{ opacity: 0.7 }}>Debit Card</p>
+
+        <h3>**** **** **** 4582</h3>
+
+        <div style={styles.cardBottom}>
+          <span>GENESIS</span>
+          <span>12/29</span>
         </div>
       </section>
 
       {/* ===== QUICK ACTIONS ===== */}
       <section style={styles.actions}>
         <Action
-          title="Send"
+          title="Transfer"
           icon={<FaExchangeAlt />}
           onClick={() => navigate("/dashboard/transfer")}
         />
         <Action
-          title="Pay Bills"
-          icon={<FaMoneyBillWave />}
-        />
-        <Action
-          title="Top Up"
+          title="Wallet"
           icon={<FaWallet />}
           onClick={() => navigate("/dashboard/wallets")}
         />
         <Action
-          title="Request"
-          icon={<FaArrowDown />}
+          title="Cards"
+          icon={<FaCreditCard />}
+          onClick={() => navigate("/dashboard/cards")}
         />
-      </section>
-
-      {/* ===== CHART ===== */}
-      <section style={styles.chartCard}>
-        <Line
-          data={chartData}
-          options={{ maintainAspectRatio: false }}
-          height={260}
+        <Action
+          title="Add"
+          icon={<FaPlus />}
         />
       </section>
 
       {/* ===== TRANSACTIONS ===== */}
-      <section style={styles.transactions}>
-        <h3 style={{ marginTop: 0 }}>Recent Transactions</h3>
+      <section style={styles.txSection}>
+        <div style={styles.txHeader}>
+          <h3>Recent Activity</h3>
+          <button style={styles.viewAll}>View all</button>
+        </div>
 
         {transactions.map((tx) => (
-          <Transaction key={tx.id} tx={tx} />
+          <Tx key={tx.id} tx={tx} />
         ))}
       </section>
 
-      {/* ===== FLOATING BUTTON ===== */}
+      {/* ===== FLOATING CTA ===== */}
       <button
         style={styles.fab}
         onClick={() => navigate("/dashboard/transfer")}
       >
-        <FaPlus />
+        Transfer
       </button>
 
     </div>
@@ -159,40 +153,22 @@ const Dashboard = () => {
 
 /* ================= SMALL COMPONENTS ================= */
 
-const Chip = ({ label, value, positive }) => (
-  <div style={styles.chip}>
-    <p style={{ margin: 0, opacity: 0.7, fontSize: 12 }}>{label}</p>
-    <strong style={{ color: positive ? "#00e676" : "#ff5252" }}>
-      {value}
-    </strong>
-  </div>
-);
-
 const Action = ({ title, icon, onClick }) => (
   <button style={styles.action} onClick={onClick}>
-    <div style={{ fontSize: 22 }}>{icon}</div>
+    <div style={{ fontSize: 20 }}>{icon}</div>
     <span>{title}</span>
   </button>
 );
 
-const Transaction = ({ tx }) => {
+const Tx = ({ tx }) => {
   const positive = tx.amount > 0;
 
   return (
     <div style={styles.txRow}>
-      <div style={styles.txLeft}>
-        <div style={styles.txIcon}>
-          {positive ? <FaArrowDown /> : <FaArrowUp />}
-        </div>
-
-        <div>
-          <strong>{tx.name}</strong>
-          <p style={styles.txDate}>{tx.date}</p>
-        </div>
-      </div>
+      <span>{tx.name}</span>
 
       <strong style={{ color: positive ? "#00e676" : "#ff5252" }}>
-        {positive ? "+" : "-"}${Math.abs(tx.amount).toFixed(2)}
+        {positive ? "+" : "-"}${Math.abs(tx.amount)}
       </strong>
     </div>
   );
@@ -204,98 +180,97 @@ export default Dashboard;
 
 const styles = {
   container: {
-    padding: "1.5rem",
+    padding: "1.4rem",
     background: "#0f172a",
-    minHeight: "100vh",
     color: "#fff",
+    minHeight: "100vh",
   },
 
-  topBar: {
+  header: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 24,
+    marginBottom: 20,
   },
 
-  userRow: {
+  headerRight: {
     display: "flex",
-    gap: 12,
+    gap: 16,
     alignItems: "center",
   },
 
-  greeting: {
-    margin: 0,
-    fontSize: 12,
-    opacity: 0.7,
+  accountSection: {
+    position: "relative",
+    marginBottom: 20,
   },
 
-  bell: {
-    position: "relative",
+  accountBtn: {
+    background: "none",
+    border: "none",
+    color: "#fff",
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
     cursor: "pointer",
   },
 
-  badge: {
-    position: "absolute",
-    top: -6,
-    right: -6,
-    background: "#ef4444",
-    borderRadius: "50%",
-    fontSize: 10,
-    padding: "2px 6px",
-  },
-
-  balanceCard: {
-    background: "linear-gradient(135deg,#6366f1,#22d3ee)",
-    borderRadius: 20,
-    padding: "1.6rem",
-    marginBottom: 24,
-  },
-
-  balanceLabel: {
-    opacity: 0.85,
-    marginBottom: 4,
-  },
-
-  balanceAmount: {
+  accountSub: {
     margin: 0,
+    fontSize: 12,
+    opacity: 0.6,
+  },
+
+  accountDropdown: {
+    background: "#1e293b",
+    borderRadius: 12,
+    marginTop: 8,
+    overflow: "hidden",
+  },
+
+  accountItem: {
+    padding: 12,
+    cursor: "pointer",
+    borderBottom: "1px solid rgba(255,255,255,0.07)",
+  },
+
+  balance: {
+    margin: "12px 0 0",
     fontSize: 32,
   },
 
-  hideBtn: {
-    marginTop: 8,
-    background: "rgba(255,255,255,0.2)",
+  eyeBtn: {
+    background: "none",
     border: "none",
-    padding: "6px 10px",
-    borderRadius: 8,
     color: "#fff",
+    marginTop: 6,
     cursor: "pointer",
   },
 
-  chips: {
-    display: "flex",
-    gap: 12,
-    marginTop: 16,
-    flexWrap: "wrap",
+  card: {
+    background: "linear-gradient(135deg,#6366f1,#22d3ee)",
+    borderRadius: 20,
+    padding: "1.5rem",
+    margin: "20px 0",
   },
 
-  chip: {
-    background: "rgba(0,0,0,0.25)",
-    padding: "8px 12px",
-    borderRadius: 12,
+  cardBottom: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: 20,
+    opacity: 0.85,
   },
 
   actions: {
     display: "grid",
     gridTemplateColumns: "repeat(4,1fr)",
-    gap: 12,
-    marginBottom: 24,
+    gap: 10,
+    marginBottom: 20,
   },
 
   action: {
     background: "#1e293b",
     border: "none",
     borderRadius: 16,
-    padding: "16px 0",
+    padding: "14px 0",
     color: "#fff",
     display: "flex",
     flexDirection: "column",
@@ -304,57 +279,43 @@ const styles = {
     cursor: "pointer",
   },
 
-  chartCard: {
+  txSection: {
     background: "#1e293b",
-    padding: 16,
     borderRadius: 16,
-    marginBottom: 24,
+    padding: 16,
   },
 
-  transactions: {
-    background: "#1e293b",
-    padding: 16,
-    borderRadius: 16,
+  txHeader: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+
+  viewAll: {
+    background: "none",
+    border: "none",
+    color: "#22d3ee",
+    cursor: "pointer",
   },
 
   txRow: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
     padding: "12px 0",
     borderBottom: "1px solid rgba(255,255,255,0.07)",
   },
 
-  txLeft: {
-    display: "flex",
-    gap: 12,
-    alignItems: "center",
-  },
-
-  txIcon: {
-    background: "#0f172a",
-    padding: 8,
-    borderRadius: 10,
-  },
-
-  txDate: {
-    margin: 0,
-    fontSize: 12,
-    opacity: 0.6,
-  },
-
   fab: {
     position: "fixed",
-    bottom: 90,
+    bottom: 80,
     right: 20,
     background: "#6366f1",
     border: "none",
-    width: 60,
-    height: 60,
-    borderRadius: "50%",
+    padding: "14px 22px",
+    borderRadius: 30,
     color: "#fff",
-    fontSize: 20,
+    fontWeight: "bold",
     cursor: "pointer",
-    boxShadow: "0 12px 24px rgba(0,0,0,0.4)",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
   },
 };
