@@ -7,6 +7,9 @@ import {
   FaExchangeAlt,
   FaWallet,
   FaMoneyBillWave,
+  FaArrowUp,
+  FaArrowDown,
+  FaPlus
 } from "react-icons/fa";
 
 import {
@@ -21,16 +24,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-} from "recharts";
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -41,42 +34,30 @@ ChartJS.register(
   Legend
 );
 
+/* ================= MOCK DATA ================= */
+
 const transactions = [
-  { id: 1, name: "Netflix Subscription", amount: "-$55.00", date: "Today" },
-  { id: 2, name: "Salary Credit", amount: "+$3,500.00", date: "Yesterday" },
-  { id: 3, name: "Transfer to David", amount: "-$250.00", date: "Feb 10" },
-  { id: 4, name: "Electricity Bill", amount: "-$180.00", date: "Feb 9" },
+  { id: 1, name: "Netflix Subscription", amount: -55, date: "Today" },
+  { id: 2, name: "Salary Credit", amount: 3500, date: "Yesterday" },
+  { id: 3, name: "Transfer to David", amount: -250, date: "Feb 10" },
+  { id: 4, name: "Electricity Bill", amount: -180, date: "Feb 9" },
 ];
 
 const chartData = {
   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
   datasets: [
     {
-      label: "Income",
+      label: "Balance Trend",
       data: [1200, 1900, 1700, 2200, 2400, 2100],
       borderColor: "#22d3ee",
-      backgroundColor: "rgba(34,211,238,0.2)",
-      tension: 0.4,
-    },
-    {
-      label: "Expenses",
-      data: [800, 1200, 1000, 1400, 1600, 1300],
-      borderColor: "#6366f1",
-      backgroundColor: "rgba(99,102,241,0.2)",
-      tension: 0.4,
+      backgroundColor: "rgba(34,211,238,0.15)",
+      tension: 0.45,
+      fill: true,
     },
   ],
 };
 
-const barData = [
-  { name: "Mon", Spending: 400 },
-  { name: "Tue", Spending: 700 },
-  { name: "Wed", Spending: 300 },
-  { name: "Thu", Spending: 500 },
-  { name: "Fri", Spending: 800 },
-  { name: "Sat", Spending: 600 },
-  { name: "Sun", Spending: 450 },
-];
+/* ================= COMPONENT ================= */
 
 const Dashboard = () => {
   const [showBalance, setShowBalance] = useState(true);
@@ -84,246 +65,296 @@ const Dashboard = () => {
 
   return (
     <div style={styles.container}>
-      <main style={styles.main}>
-        {/* Header */}
-        <header style={styles.header}>
-          <h2 style={{ margin: 0 }}>Welcome back, Genesis 👋</h2>
-          <FaBell size={'clamp(1.4rem, 3vw, 1.8rem)'} style={{ cursor: "pointer" }} />
-        </header>
 
-        {/* Balance Card */}
-        <section style={styles.balanceCard}>
+      {/* ===== TOP BAR ===== */}
+      <div style={styles.topBar}>
+        <div style={styles.userRow}>
+          <FaUserCircle size={40} />
           <div>
-            <p style={{ opacity: 0.8, marginBottom: '0.5rem' }}>Total Balance</p>
-            <h1 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-              {showBalance ? "$12,458.00" : "XXXX"}
-              <button
-                style={styles.showBtn}
-                onClick={() => setShowBalance(!showBalance)}
-              >
-                {showBalance ? "Hide" : "Show"}
-              </button>
-            </h1>
+            <p style={styles.greeting}>Welcome back</p>
+            <h3 style={{ margin: 0 }}>Genesis 👋</h3>
           </div>
-          <FaMoneyBillWave size={'clamp(2rem, 5vw, 2.8rem)'} />
-        </section>
+        </div>
 
-        {/* Quick Actions */}
-        <section style={styles.actions}>
-          <ActionCard title="Send Money" icon={<FaExchangeAlt />} />
-          <ActionCard title="Pay Bills" icon={<FaMoneyBillWave />} />
-          <ActionCard title="Top Up" icon={<FaWallet />} />
-          <ActionCard title="Request" icon={<FaUserCircle />} />
-        </section>
+        <div style={styles.bell}>
+          <FaBell size={20} />
+          <span style={styles.badge}>3</span>
+        </div>
+      </div>
 
-        {/* Stats Cards */}
-        <section style={styles.stats}>
-          <StatCard title="Income" amount="$4,200" positive />
-          <StatCard title="Expenses" amount="$1,850" />
-          <StatCard title="Savings" amount="$6,400" positive />
-        </section>
+      {/* ===== BALANCE CARD ===== */}
+      <section style={styles.balanceCard}>
+        <p style={styles.balanceLabel}>Total Balance</p>
 
-        {/* Charts */}
-        <section style={styles.charts}>
-          <div style={styles.lineChart}>
-            <Line data={chartData} options={{ maintainAspectRatio: false }} height={300} />
-          </div>
-          <div style={styles.barChart}>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={barData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="Spending" fill="#6366f1" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
+        <h1 style={styles.balanceAmount}>
+          {showBalance ? "$12,458.00" : "••••••••"}
+        </h1>
 
-        {/* Recent Transactions */}
-        <section style={styles.transactions}>
-          <h3 style={{ marginBottom: '1rem', marginTop: 0 }}>Recent Transactions</h3>
-          {transactions.map((tx) => (
-            <div key={tx.id} style={styles.txRow}>
-              <div>
-                <strong>{tx.name}</strong>
-                <p style={{ margin: '0.25rem 0 0 0', opacity: 0.6, fontSize: '0.9em' }}>{tx.date}</p>
-              </div>
-              <span
-                style={{
-                  color: tx.amount.startsWith("+") ? "#00e676" : "#ff5252",
-                  fontWeight: "bold",
-                }}
-              >
-                {tx.amount}
-              </span>
-            </div>
-          ))}
-        </section>
-      </main>
+        <button
+          style={styles.hideBtn}
+          onClick={() => setShowBalance(!showBalance)}
+        >
+          {showBalance ? "Hide balance" : "Show balance"}
+        </button>
+
+        {/* Quick chips */}
+        <div style={styles.chips}>
+          <Chip label="Income" value="+$4,200" positive />
+          <Chip label="Expenses" value="-$1,850" />
+          <Chip label="Savings" value="+$6,400" positive />
+        </div>
+      </section>
+
+      {/* ===== QUICK ACTIONS ===== */}
+      <section style={styles.actions}>
+        <Action
+          title="Send"
+          icon={<FaExchangeAlt />}
+          onClick={() => navigate("/dashboard/transfer")}
+        />
+        <Action
+          title="Pay Bills"
+          icon={<FaMoneyBillWave />}
+        />
+        <Action
+          title="Top Up"
+          icon={<FaWallet />}
+          onClick={() => navigate("/dashboard/wallets")}
+        />
+        <Action
+          title="Request"
+          icon={<FaArrowDown />}
+        />
+      </section>
+
+      {/* ===== CHART ===== */}
+      <section style={styles.chartCard}>
+        <Line
+          data={chartData}
+          options={{ maintainAspectRatio: false }}
+          height={260}
+        />
+      </section>
+
+      {/* ===== TRANSACTIONS ===== */}
+      <section style={styles.transactions}>
+        <h3 style={{ marginTop: 0 }}>Recent Transactions</h3>
+
+        {transactions.map((tx) => (
+          <Transaction key={tx.id} tx={tx} />
+        ))}
+      </section>
+
+      {/* ===== FLOATING BUTTON ===== */}
+      <button
+        style={styles.fab}
+        onClick={() => navigate("/dashboard/transfer")}
+      >
+        <FaPlus />
+      </button>
+
     </div>
   );
 };
 
-// Action Cards
-const ActionCard = ({ title, icon }) => {
-  return (
-    <div
-      style={styles.actionCard}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-6px)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
-      }}
-    >
-      <div style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)" }}>{icon}</div>
-      <p style={{ margin: 0, fontSize: "clamp(0.8rem, 2vw, 0.95rem)", fontWeight: "500" }}>{title}</p>
-    </div>
-  );
-};
+/* ================= SMALL COMPONENTS ================= */
 
-// Stats Cards
-const StatCard = ({ title, amount, positive }) => {
+const Chip = ({ label, value, positive }) => (
+  <div style={styles.chip}>
+    <p style={{ margin: 0, opacity: 0.7, fontSize: 12 }}>{label}</p>
+    <strong style={{ color: positive ? "#00e676" : "#ff5252" }}>
+      {value}
+    </strong>
+  </div>
+);
+
+const Action = ({ title, icon, onClick }) => (
+  <button style={styles.action} onClick={onClick}>
+    <div style={{ fontSize: 22 }}>{icon}</div>
+    <span>{title}</span>
+  </button>
+);
+
+const Transaction = ({ tx }) => {
+  const positive = tx.amount > 0;
+
   return (
-    <div
-      style={styles.statCard}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "translateY(-6px)";
-        e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "none";
-      }}
-    >
-      <p style={{ margin: 0, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", opacity: 0.8 }}>{title}</p>
-      <h2 style={{ color: positive ? "#00e676" : "#ff5252", fontSize: "clamp(1.4rem, 3.5vw, 2rem)", margin: "0.5rem 0 0 0" }}>
-        {amount}
-      </h2>
+    <div style={styles.txRow}>
+      <div style={styles.txLeft}>
+        <div style={styles.txIcon}>
+          {positive ? <FaArrowDown /> : <FaArrowUp />}
+        </div>
+
+        <div>
+          <strong>{tx.name}</strong>
+          <p style={styles.txDate}>{tx.date}</p>
+        </div>
+      </div>
+
+      <strong style={{ color: positive ? "#00e676" : "#ff5252" }}>
+        {positive ? "+" : "-"}${Math.abs(tx.amount).toFixed(2)}
+      </strong>
     </div>
   );
 };
 
 export default Dashboard;
 
-// ===== RESPONSIVE STYLES WITH CLAMP =====
+/* ================= STYLES ================= */
+
 const styles = {
   container: {
-    display: "flex",
-    minHeight: "100vh",
-    fontFamily: "Segoe UI, sans-serif",
+    padding: "1.5rem",
     background: "#0f172a",
+    minHeight: "100vh",
     color: "#fff",
   },
-  main: {
-    flex: 1,
-    padding: "clamp(1rem, 4vw, 2rem)",
-    overflowX: "hidden",
-  },
-  header: {
+
+  topBar: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "clamp(1rem, 2vw, 1.5rem)",
-    gap: "1rem",
-    flexWrap: "wrap",
+    marginBottom: 24,
   },
+
+  userRow: {
+    display: "flex",
+    gap: 12,
+    alignItems: "center",
+  },
+
+  greeting: {
+    margin: 0,
+    fontSize: 12,
+    opacity: 0.7,
+  },
+
+  bell: {
+    position: "relative",
+    cursor: "pointer",
+  },
+
+  badge: {
+    position: "absolute",
+    top: -6,
+    right: -6,
+    background: "#ef4444",
+    borderRadius: "50%",
+    fontSize: 10,
+    padding: "2px 6px",
+  },
+
   balanceCard: {
     background: "linear-gradient(135deg,#6366f1,#22d3ee)",
-    borderRadius: "clamp(1rem, 2vw, 1.5rem)",
-    padding: "clamp(1.2rem, 4vw, 1.8rem)",
+    borderRadius: 20,
+    padding: "1.6rem",
+    marginBottom: 24,
+  },
+
+  balanceLabel: {
+    opacity: 0.85,
+    marginBottom: 4,
+  },
+
+  balanceAmount: {
+    margin: 0,
+    fontSize: 32,
+  },
+
+  hideBtn: {
+    marginTop: 8,
+    background: "rgba(255,255,255,0.2)",
+    border: "none",
+    padding: "6px 10px",
+    borderRadius: 8,
+    color: "#fff",
+    cursor: "pointer",
+  },
+
+  chips: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
-    gap: "1rem",
-    minHeight: "clamp(100px, 20vw, 150px)",
+    gap: 12,
+    marginTop: 16,
     flexWrap: "wrap",
   },
-  showBtn: {
-    marginLeft: "clamp(0.5rem, 1vw, 1rem)",
-    fontSize: "clamp(0.7rem, 2vw, 0.85rem)",
-    padding: "clamp(0.3rem, 0.8vw, 0.5rem) clamp(0.5rem, 1.5vw, 0.8rem)",
-    borderRadius: "0.4rem",
-    cursor: "pointer",
-    border: "none",
-    background: "rgba(255,255,255,0.25)",
-    color: "#fff",
-    transition: "all 0.3s ease",
+
+  chip: {
+    background: "rgba(0,0,0,0.25)",
+    padding: "8px 12px",
+    borderRadius: 12,
   },
+
   actions: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(clamp(120px, 25vw, 200px), 1fr))",
-    gap: "clamp(0.8rem, 2vw, 1.2rem)",
-    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
+    gridTemplateColumns: "repeat(4,1fr)",
+    gap: 12,
+    marginBottom: 24,
   },
-  actionCard: {
+
+  action: {
     background: "#1e293b",
-    padding: "clamp(1rem, 2.5vw, 1.5rem)",
-    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
-    textAlign: "center",
-    cursor: "pointer",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    minHeight: "clamp(80px, 15vw, 120px)",
+    border: "none",
+    borderRadius: 16,
+    padding: "16px 0",
+    color: "#fff",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    gap: "0.5rem",
+    gap: 6,
+    cursor: "pointer",
   },
-  stats: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(clamp(140px, 28vw, 220px), 1fr))",
-    gap: "clamp(0.8rem, 2vw, 1.2rem)",
-    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
-  },
-  statCard: {
+
+  chartCard: {
     background: "#1e293b",
-    padding: "clamp(1.2rem, 2.5vw, 1.5rem)",
-    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
-    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-    minHeight: "clamp(100px, 18vw, 140px)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 24,
   },
-  charts: {
-    display: "grid",
-    gridTemplateColumns: "1fr",
-    gap: "clamp(1.5rem, 3vw, 2rem)",
-    marginBottom: "clamp(1.5rem, 3vw, 2rem)",
-  },
-  lineChart: {
-    background: "#1e293b",
-    padding: "clamp(1rem, 2.5vw, 1.5rem)",
-    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
-    overflowX: "auto",
-    minHeight: "300px",
-  },
-  barChart: {
-    background: "#1e293b",
-    padding: "clamp(1rem, 2.5vw, 1.5rem)",
-    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
-    overflowX: "auto",
-    minHeight: "clamp(250px, 40vw, 350px)",
-  },
+
   transactions: {
     background: "#1e293b",
-    padding: "clamp(1rem, 2.5vw, 1.5rem)",
-    borderRadius: "clamp(0.8rem, 1.5vw, 1rem)",
-    marginBottom: "2rem",
-    overflowX: "auto",
+    padding: 16,
+    borderRadius: 16,
   },
+
   txRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "clamp(0.8rem, 1.5vw, 1rem) 0",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    fontSize: "clamp(0.85rem, 2vw, 1rem)",
+    padding: "12px 0",
+    borderBottom: "1px solid rgba(255,255,255,0.07)",
+  },
+
+  txLeft: {
+    display: "flex",
+    gap: 12,
+    alignItems: "center",
+  },
+
+  txIcon: {
+    background: "#0f172a",
+    padding: 8,
+    borderRadius: 10,
+  },
+
+  txDate: {
+    margin: 0,
+    fontSize: 12,
+    opacity: 0.6,
+  },
+
+  fab: {
+    position: "fixed",
+    bottom: 90,
+    right: 20,
+    background: "#6366f1",
+    border: "none",
+    width: 60,
+    height: 60,
+    borderRadius: "50%",
+    color: "#fff",
+    fontSize: 20,
+    cursor: "pointer",
+    boxShadow: "0 12px 24px rgba(0,0,0,0.4)",
   },
 };
