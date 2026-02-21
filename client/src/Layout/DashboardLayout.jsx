@@ -1,6 +1,8 @@
+// src/layouts/DashboardLayout.jsx
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import BottomNav from "../components/BottomNav";
 
 function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -8,13 +10,11 @@ function DashboardLayout() {
   return (
     <div className="dashboard">
 
-      {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
 
-      {/* Overlay (mobile) */}
       {sidebarOpen && (
         <div
           className="overlay open"
@@ -22,30 +22,28 @@ function DashboardLayout() {
         />
       )}
 
-      {/* Main Area */}
       <div className="main">
 
-        {/* Navbar */}
         <header className="navbar">
-
           <button
             className="menu-btn"
             onClick={() => setSidebarOpen(true)}
-            aria-label="Open sidebar"
           >
             ☰
           </button>
 
-          <h3>Genesis Bank Dashboard</h3>
-
+          <h3>Genesis Bank</h3>
         </header>
 
-        {/* Page Content */}
         <main className="content">
           <Outlet />
         </main>
 
       </div>
+
+      {/* ⭐ Mobile Bottom Navigation */}
+      <BottomNav />
+
     </div>
   );
 }
